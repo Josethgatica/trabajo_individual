@@ -1,63 +1,46 @@
-import React, { useState } from "react";
-import { Form, Button, Container, Card } from "react-bootstrap";
+import React from "react";
+import {Form, Button,Card, Alert} from "react-bootstrap"
 
-const FormularioLogin = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+const FormularioLogin =  ({usuario, contraseña, error, setUsuario, setContraseña, iniciarSesion}) =>{
+    return (
+<Card style = {{ minWidth: "320px", maxWidth: "400px", width: "100%" }} className="p-4 shadow-lg">
+  <Card.Body>
+    <h3 className="text-center mb-4">Iniciar Sesión</h3>
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+    {error && <Alert variant="danger">{error}</Alert>}
 
-    try {
-      await onLogin(email, password);
-    } catch (err) {
-      setError(err.message || "Error al iniciar sesión. Verifica tus credenciales.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    <Form>
+      <Form.Group className="mb-3" controlId="usuario">
+        <Form.Label>Usuario</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Ingresa tu usuario"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+          required
+        />
+      </Form.Group>
 
-  return (
-    <Container className="d-flex justify-content-center align-items-center min-vh-100">
-      <Card className="p-4 shadow" style={{ width: "100%", maxWidth: "420px" }}>
-        <Card.Body>
-          <h3 className="text-center mb-4">Iniciar Sesión - Discosa</h3>
-          
-          {error && <div className="alert alert-danger">{error}</div>}
+      <Form.Group className="mb-3" controlId="contrasena">
+        <Form.Label>Contraseña</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Ingresa tu contraseña"
+          value={contraseña}
+          onChange={(e) => setContraseña(e.target.value)}
+          required
+        />
+      </Form.Group>
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Correo electrónico</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
+      <Button variant="primary" className="w-100" onClick={iniciarSesion}>
+        Iniciar Sesión
+      </Button>
+    </Form>
+  </Card.Body>
+</Card>
 
-            <Form.Group className="mb-4">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
+    )
+}
 
-            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-              {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
-  );
-};
 
 export default FormularioLogin;

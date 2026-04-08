@@ -1,2 +1,12 @@
-const Pagina404 = () => <h1>404 - Página no encontrada</h1>;
-export default Pagina404;
+import React from 'react'
+
+function Pagina404() {
+  return (
+    <div>
+      error 404: Página no encontrada
+    </div>
+  )
+}
+
+export default Pagina404
+    

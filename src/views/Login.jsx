@@ -1,49 +1,71 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import FormularioLogin from "../components/login/FormularioLogin";
-import { supabase } from "../database/supabaseconfig";
+import React, {useState, useEffect} from 'react'
+import { useNavigate } from 'react-router-dom';
+import FormularioLogin from '../components/login/FormularioLogin';
+import {supabase} from "../database/supabaseconfig";
+import "../App.css"
 
-const Login = () => {
-  const navigate = useNavigate();
+function Login() {
+  const [usuario, setUsuario] = useState("");
+  const [contraseña, setContraseña] = useState("");
+  const [error, setError] = useState(null);
+  const navegar = useNavigate();
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        localStorage.setItem("usuario-supabase", session.user.email);
-        navigate("/");
-      }
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        localStorage.setItem("usuario-supabase", session.user.email);
-        navigate("/");
-      }
-    });
-
-    return () => listener.subscription.unsubscribe();
-  }, [navigate]);
-
-  
-  const handleLogin = async (email, password) => {
+const iniciarSesion = async () => {
+  try {
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: usuario,
+      password: contraseña,
     });
 
-    if (error) throw error;
-
-    if (data.user) {
-      localStorage.setItem("usuario-supabase", data.user.email);
-      navigate("/");
+    if (error) {
+      setError("Credenciales incorrectas. Inténtalo de nuevo.");
+   return;
     }
+    if (data.user) {
+      localStorage.setItem("usuario-supabase", usuario);
+      navegar("/");
+    }
+  } catch (err) {
+    setError("Ocurrió un error al iniciar sesión. Inténtalo de nuevo.");
+    console.error("Error en la solicitud:", err);
+  }
+};
+useEffect(() => { 
+  const usuarioGuardado = localStorage.getItem("usuario-supabase");
+  if (usuarioGuardado) {
+    navegar("/");
+  }
+}, [navegar]);
+
+  const estiloContenedor = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+    padding: "20px",
+    overflow: "hidden",
   };
 
   return (
-    <div className="login-container">
-      <FormularioLogin onLogin={handleLogin} />
+    <div style={estiloContenedor}>
+      <FormularioLogin
+        usuario={usuario}
+        contraseña={contraseña}
+        error={error}
+        setUsuario={setUsuario}
+        setContraseña={setContraseña}
+        iniciarSesion={iniciarSesion}
+      />
+      
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+
+
+export default Login
