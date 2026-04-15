@@ -17,8 +17,8 @@ const ModalRegistroCategoria = ({
     setDeshabilitado(true);
 
     try {
-      await agregarCategoria();           // Llamamos a la función del padre
-      setMostrarModal(false);             // Cerramos el modal
+      await agregarCategoria();   
+      setMostrarModal(false);             
     } catch (error) {
       console.error("Error al registrar categoría:", error);
     } finally {

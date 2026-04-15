@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import { supabase } from "../database/supabaseconfig";
 
+import TarjetaCategoria from "../components/categorias/TarjetaCategoria";
 import ModalRegistroCategoria from "../components/categorias/ModalRegistroCategoria";
 import NotificacionOperacion from "../components/NotificacionOperacion";
 import TablaCategorias from "../components/categorias/TablaCategorias";
@@ -135,14 +136,12 @@ const Categorias = () => {
         tipo: "exito",
       });
 
-      // Limpiar formulario y cerrar modal
       setNuevaCategoria({
         nombre_categoria: "",
         descripcion_categoria: "",
       });
       setMostrarModal(false);
 
-      // Recargar la tabla
       await cargarCategorias();
     } catch (err) {
       console.error("Excepción al agregar categoría:", err.message);
@@ -174,6 +173,19 @@ const Categorias = () => {
 
       <hr />
 
+      {/* Tarjetas de Categorías - AÑADIDO AQUÍ */}
+      {!cargando && (
+        
+          <Col xs={12} sm={12} md={12} lg={12} className="d-lg-none">
+            <TarjetaCategoria
+              categorias={categorias}
+              abrirModalEdicion={abrirModalEdicion}
+              abrirModalEliminacion={abrirModalEliminacion}
+            />
+          </Col>
+        
+      )}
+
       {/* Spinner de carga */}
       {cargando && (
         <Row className="text-center my-5">
@@ -184,9 +196,9 @@ const Categorias = () => {
         </Row>
       )}
 
-      {/* Tabla de categorías */}
+      {/* Tabla - Visible en pantallas grandes */}
       {!cargando && (
-        <Row>
+        <Row className="d-none d-lg-block">
           <Col lg={12}>
             <TablaCategorias
               categories={categorias}
