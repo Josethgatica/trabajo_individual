@@ -1,85 +1,80 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, {useState} from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 
-const ModalRegistroCategoria = ({ 
-  mostrarModal, 
-  setMostrarModal, 
-  nuevaCategoria, 
-  manejoCambioInput, 
-  agregarCategoria 
+const ModalRegistroCategoria =({
+    mostrarModal,
+    setMostrarModal,
+    nuevaCategoria,
+    manejoCambioInput,
+    agregarCategoria
 }) => {
+    const [desabilitado, setDesabilitado] = useState(false);
 
-  const [deshabilitado, setDeshabilitado] = useState(false);
+    const handleRegistrar = async () => {
+        if (desabilitado) return;
+        setDesabilitado(true);
+        await agregarCategoria();
+        setDesabilitado(false);
+    };
 
-  const handleRegistrar = async () => {
-    if (deshabilitado) return;
-
-    setDeshabilitado(true);
-
-    try {
-      await agregarCategoria();   
-      setMostrarModal(false);             
-    } catch (error) {
-      console.error("Error al registrar categoría:", error);
-    } finally {
-      setDeshabilitado(false);
-    }
-  };
-
-  return (
+    return (
     <Modal
-      show={mostrarModal}
-      onHide={() => setMostrarModal(false)}
-      backdrop="static"
-      keyboard={false}
-      centered
+        show={mostrarModal}
+        onHide={() => setMostrarModal(false)}
+        backdrop="static"
+        keyboard={false}
+        centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Agregar Categoría</Modal.Title>
-      </Modal.Header>
+        <Modal.Header closeButton>
+            <Modal.Title>Agregar Categoría</Modal.Title>
+        </Modal.Header>
+        
+        <Modal.Body>
+            <Form>
+                <Form.Group className="mb-3">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="nombre_categoria"
+                        value={nuevaCategoria.nombre_categoria}
+                        onChange={manejoCambioInput}
+                        placeholder="Ingresa el nombre"
+                    />
+                </Form.Group>
 
-      <Modal.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre_categoria"
-              value={nuevaCategoria.nombre_categoria}
-              onChange={manejoCambioInput}
-              placeholder="Ingresa el nombre"
-            />
-          </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Descripción</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="descripcion_categoria"
+                        value={nuevaCategoria.descripcion_categoria}
+                        onChange={manejoCambioInput}
+                        placeholder="Ingresa la descripción"
+                    />
+                </Form.Group>
+            </Form>
+        </Modal.Body>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="descripcion_categoria"
-              value={nuevaCategoria.descripcion_categoria}
-              onChange={manejoCambioInput}
-              placeholder="Ingresa la descripción"
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setMostrarModal(false)}>
-          Cancelar
-        </Button>
-
-        <Button 
-          variant="primary"
-          onClick={handleRegistrar}
-          disabled={nuevaCategoria.nombre_categoria.trim() === "" || deshabilitado}
-        >
-          Guardar
-        </Button>
-      </Modal.Footer>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={() => setMostrarModal(false)}>
+                Cancelar
+            </Button>
+            <Button
+                variant="primary"
+                onClick={handleRegistrar}
+                disabled={
+                    nuevaCategoria.nombre_categoria.trim() === "" ||
+                    nuevaCategoria.descripcion_categoria.trim() === "" ||
+                    desabilitado
+                }
+            >
+                Guardar
+            </Button>
+        </Modal.Footer>
     </Modal>
-  );
+);
+
 };
 
 export default ModalRegistroCategoria;
