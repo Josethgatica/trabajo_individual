@@ -7,6 +7,7 @@ import ModalRegistroCategoria from '../components/categorias/ModalRegistroCatego
 import TarjetaCategoria from "../components/categorias/TarjetaCategoria";
 import ModalEdicionCategoria from "../components/categorias/ModalEdicionCategoria";
 import ModalEliminarCategoria from "../components/categorias/ModalEliminacionCategoria";
+import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 
 const Categorias = () => {
     const [categorias, setCategorias] = useState([]);
@@ -16,6 +17,7 @@ const Categorias = () => {
     const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
     const [categoriaAEliminar, setCategoriaAEliminar] = useState(null);
     const [toast, setToast] = useState({ mostrar: false, mensaje: '', tipo: '' });
+    const [textoBusqueda, setTextoBusqueda] = useState('');
 
     const [categoriaEditar, setCategoriaEditar] = useState({
         id_categoria: "",
@@ -36,6 +38,10 @@ const Categorias = () => {
     const manejoCambioInputEdicion = (e) => {
         const { name, value } = e.target;
         setCategoriaEditar(prev => ({ ...prev, [name]: value }));
+    };
+
+    const manejarCambioBusqueda = (e) => {
+        setTextoBusqueda(e.target.value);
     };
 
     // --- FUNCIÓN ACTUALIZAR (Corregida) ---
@@ -170,6 +176,11 @@ const eliminarCategoria = async () => {
         cargarCategorias();
     }, []);
 
+    const categoriasFiltradas = categorias.filter(categoria =>
+        categoria.nombre_categoria.toLowerCase().includes(textoBusqueda.toLowerCase()) ||
+        categoria.descripcion_categoria.toLowerCase().includes(textoBusqueda.toLowerCase())
+    );
+
     const abrirModalEdicion = (categoria) => {
         setCategoriaEditar(categoria);
         setMostrarModalEdicion(true);
@@ -194,6 +205,15 @@ const eliminarCategoria = async () => {
                 </Col>
             </Row>
             <hr />
+
+            <Row className="mb-3">
+                <Col>
+                    <CuadroBusquedas
+                        textoBusqueda={textoBusqueda}
+                        manejarCambioBusqueda={manejarCambioBusqueda}
+                    />
+                </Col>
+            </Row>
 
             <ModalRegistroCategoria
                 mostrarModal={mostrarModal}
@@ -235,7 +255,7 @@ const eliminarCategoria = async () => {
                     {/* Vista Móvil */}
                     <div className="d-lg-none">
                         <TarjetaCategoria
-                            categorias={categorias}
+                            categorias={categoriasFiltradas}
                             abrirModalEdicion={abrirModalEdicion}
                             abrirModalEliminacion={abrirModalEliminacion}
                         />
@@ -244,13 +264,17 @@ const eliminarCategoria = async () => {
                     {/* Vista Escritorio */}
                     <div className="d-none d-lg-block">
                         <TablaCategorias
-                            categorias={categorias}
+                            categorias={categoriasFiltradas}
                             abrirModalEdicion={abrirModalEdicion}
                             abrirModalEliminacion={abrirModalEliminacion}
                         />
                     </div>
 
-                    {categorias.length === 0 && <p className="text-center">No hay datos.</p>}
+                    {categoriasFiltradas.length === 0 && !cargando && (
+                        <p className="text-center">
+                            {textoBusqueda ? "No se encontraron categorías que coincidan con la búsqueda." : "No hay datos."}
+                        </p>
+                    )}
                 </>
             )}
         </Container>
