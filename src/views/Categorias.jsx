@@ -123,7 +123,7 @@ const eliminarCategoria = async () => {
             mensaje: `Categoría ${categoriaAEliminar.nombre_categoria} eliminada exitosamente.`, 
             tipo: "exito" 
         });
-    } catch (err) {
+} catch {
         setToast({ mostrar: true, 
             mensaje: "Error al eliminar la categoría.", 
             tipo: "error" });
@@ -150,7 +150,7 @@ const eliminarCategoria = async () => {
             setNuevaCategoria({ nombre_categoria: "", descripcion_categoria: "" });
             setMostrarModal(false);
             cargarCategorias(); // Recargar lista
-        } catch (err) {
+        } catch {
             setToast({ mostrar: true, mensaje: "Error al registrar.", tipo: "error" });
         }
     };

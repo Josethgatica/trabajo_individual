@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { supabase } from '../../database/supabaseconfig';
 
 const ModalEdicionCategoria = ({
     mostrarModalEdicion,
