@@ -4,11 +4,15 @@ import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import logo from "../../assets/icono_intermarket-removebg-preview.png";
 import { supabase } from "../../database/supabaseconfig";
 import "../../App.css";
+import { useAuth } from "../context/AuthContext";
+
 
 const Encabezado = () => {
   const [mostrarMenu, setMostrarMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation(); // Para detectar la ruta actual
+  const { tienePermiso, logout, usuario } = useAuth();
+
 
   const manejarToggle = () => setMostrarMenu(!mostrarMenu);
 
@@ -18,17 +22,10 @@ const Encabezado = () => {
   };
 
   const cerrarSesion = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-
-      localStorage.removeItem("usuario-supabase");
-      setMostrarMenu(false);
-      navigate("/login");
-    } catch (error) {
-      console.error("Error cerrando sesión:", error.message);
-    }
-  };
+  await logout();
+  setMostrarMenu(false);
+  navigate("/login");
+};
 
   // Detectar rutas especiales
   const esLogin = location.pathname === "/login";
@@ -89,6 +86,30 @@ const Encabezado = () => {
           >
             {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
             <strong>Productos</strong>
+          </Nav.Link>
+
+<Nav.Link
+            onClick={() => manejarNavegacion("/clientes")}
+            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+          >
+            {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
+            <strong>Clientes</strong>
+          </Nav.Link>
+
+          <Nav.Link
+            onClick={() => manejarNavegacion("/empleados")}
+            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+          >
+            {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
+            <strong>Empleados</strong>
+          </Nav.Link>
+
+          <Nav.Link
+            onClick={() => manejarNavegacion("/permisos")}
+            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+          >
+            {mostrarMenu ? <i className="bi-key-fill me-2"></i> : null}
+            <strong>Permisos</strong>
           </Nav.Link>
 
           {/* Opción para ir al catálogo público desde admin */}
