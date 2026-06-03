@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
-import logo from "../../assets/icono_intermarket-removebg-preview.png";
+import logo from "../../assets/ranch.jpeg";
 import { supabase } from "../../database/supabaseconfig";
-import "../../App.css";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 
 const Encabezado = () => {
@@ -12,7 +11,7 @@ const Encabezado = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Para detectar la ruta actual
   const { tienePermiso, logout, usuario } = useAuth();
-
+  const [mostrarChatIA, setMostrarChatIA] = useState(false);
 
   const manejarToggle = () => setMostrarMenu(!mostrarMenu);
 
@@ -21,7 +20,7 @@ const Encabezado = () => {
     setMostrarMenu(false);
   };
 
-  const cerrarSesion = async () => {
+ const cerrarSesion = async () => {
   await logout();
   setMostrarMenu(false);
   navigate("/login");
@@ -63,7 +62,9 @@ const Encabezado = () => {
   } else {
     contenidoMenu = (
       <>
-        <Nav className="navbar">
+     
+        <Nav className="ms-auto pe-2">
+          {tienePermiso('ver_inicio') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/")}
             className={mostrarMenu ? "color-texto-marca" : "text-white"}
@@ -71,7 +72,9 @@ const Encabezado = () => {
             {mostrarMenu ? <i className="bi-house-fill me-2"></i> : null}
             <strong>Inicio</strong>
           </Nav.Link>
-
+          )}
+ 
+{tienePermiso('ver_categorias') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/categorias")}
             className={mostrarMenu ? "color-texto-marca" : "text-white"}
@@ -79,7 +82,10 @@ const Encabezado = () => {
             {mostrarMenu ? <i className="bi-bookmark-fill me-2"></i> : null}
             <strong>Categorías</strong>
           </Nav.Link>
+)}
 
+          
+    {tienePermiso('ver_productos') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/productos")}
             className={mostrarMenu ? "color-texto-marca" : "text-white"}
@@ -87,32 +93,39 @@ const Encabezado = () => {
             {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
             <strong>Productos</strong>
           </Nav.Link>
+    )}
 
-<Nav.Link
-            onClick={() => manejarNavegacion("/clientes")}
-            className={mostrarMenu ? "color-texto-marca" : "text-white"}
-          >
-            {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
-            <strong>Clientes</strong>
-          </Nav.Link>
-
+{tienePermiso('ver_empleados') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/empleados")}
             className={mostrarMenu ? "color-texto-marca" : "text-white"}
           >
-            {mostrarMenu ? <i className="bi-bag-heart-fill me-2"></i> : null}
+            {mostrarMenu ? <i className="bi-people-fill me-2"></i> : null}
             <strong>Empleados</strong>
           </Nav.Link>
+)}
 
+{tienePermiso('ver_clientes') && (
+          <Nav.Link
+            onClick={() => manejarNavegacion("/clientes")}
+            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+          >
+            {mostrarMenu ? <i className="bi-person-badge-fill me-2"></i> : null}
+            <strong>Clientes</strong>
+          </Nav.Link>
+)}
+
+{tienePermiso('ver_permisos') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/permisos")}
             className={mostrarMenu ? "color-texto-marca" : "text-white"}
           >
-            {mostrarMenu ? <i className="bi-key-fill me-2"></i> : null}
+            {mostrarMenu ? <i className="bi-person-badge-fill me-2"></i> : null}
             <strong>Permisos</strong>
           </Nav.Link>
+)}
 
-          {/* Opción para ir al catálogo público desde admin */}
+ {tienePermiso('ver_catalogo') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/catalogo")}
             className={mostrarMenu ? "color-texto-marca" : "text-white"}
@@ -120,8 +133,8 @@ const Encabezado = () => {
             {mostrarMenu ? <i className="bi-images me-2"></i> : null}
             <strong>Catálogo</strong>
           </Nav.Link>
-
-          
+ )}
+          <hr />
 
           {/* Ícono cerrar sesión en barra superior */}
           {mostrarMenu ? null : (
@@ -134,6 +147,8 @@ const Encabezado = () => {
           )}
           <hr />
         </Nav>
+
+      
 
         {/* Información de usuario y botón cerrar sesión */}
         {mostrarMenu && (
@@ -152,7 +167,10 @@ const Encabezado = () => {
             </button>
           </div>
         )}
+        
       </>
+
+      
     );
   }
 
@@ -172,7 +190,7 @@ const Encabezado = () => {
             className="d-inline-block me-2"
           />
           <strong>
-            <h4 className="mb-0">GATICA</h4>
+            <h4 className="mb-0">Laura</h4>
           </strong>
         </Navbar.Brand>
 
@@ -189,7 +207,7 @@ const Encabezado = () => {
           onHide={() => setMostrarMenu(false)}
         >
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Menú GATICA</Offcanvas.Title>
+            <Offcanvas.Title>Menú Discosa</Offcanvas.Title>
           </Offcanvas.Header>
 
           <Offcanvas.Body>{contenidoMenu}</Offcanvas.Body>

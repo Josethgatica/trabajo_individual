@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalEliminarProducto = ({
-  mostrarModalEdicion,
+const ModalEliminacionProducto = ({
+  mostrarModalEliminacion,
   setMostrarModalEliminacion,
   eliminarProducto,
   producto,
@@ -12,16 +12,13 @@ const ModalEliminarProducto = ({
   const handleEliminar = async () => {
     if (deshabilitado) return;
     setDeshabilitado(true);
-    try {
-      await eliminarProducto();
-    } finally {
-      setDeshabilitado(false);
-    }
+    await eliminarProducto();
+    setDeshabilitado(false);
   };
 
   return (
     <Modal
-      show={mostrarModalEdicion}
+      show={mostrarModalEliminacion}
       onHide={() => setMostrarModalEliminacion(false)}
       backdrop="static"
       keyboard={false}
@@ -30,22 +27,23 @@ const ModalEliminarProducto = ({
       <Modal.Header closeButton>
         <Modal.Title>Eliminar Producto</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
         <p>
-          ¿Está seguro que desea eliminar el producto <strong>{producto?.nombreProducto}</strong>?
+          ¿Está seguro que desea eliminar el producto <strong>{producto?.nombre_producto || producto?.nombreProducto}</strong>?
         </p>
-        <p className="text-danger">Esta acción no se puede deshacer.</p>
       </Modal.Body>
+
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setMostrarModalEliminacion(false)}>
           Cancelar
         </Button>
         <Button variant="danger" onClick={handleEliminar} disabled={deshabilitado}>
-          {deshabilitado ? 'Eliminando...' : 'Eliminar'}
+          Eliminar
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default ModalEliminarProducto;
+export default ModalEliminacionProducto;

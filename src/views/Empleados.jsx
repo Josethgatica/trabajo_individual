@@ -9,7 +9,10 @@ import TarjetaEmpleado from "../components/empleados/TarjetaEmpleado";
 import NotificacionOperacion from "../components/NotificacionOperacion";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 
+import { useAuth } from "../context/AuthContext";
+
 const Empleados = () => {
+  const { tienePermiso } = useAuth();
   const [empleados, setEmpleados] = useState([]);
   const [empleadosFiltrados, setEmpleadosFiltrados] = useState([]);
   const [textoBusqueda, setTextoBusqueda] = useState("");
@@ -180,9 +183,11 @@ const Empleados = () => {
           <h3><i className="bi-person-badge-fill me-2"></i>Empleados</h3>
         </Col>
         <Col className="text-end">
-          <Button onClick={() => setMostrarModal(true)}>
-            <i className="bi-plus-lg me-1"></i>Nuevo Empleado
-          </Button>
+          {tienePermiso('crear_empleados') && (
+            <Button onClick={() => setMostrarModal(true)}>
+              <i className="bi-plus-lg me-1"></i>Nuevo Empleado
+            </Button>
+          )}
         </Col>
       </Row>
 

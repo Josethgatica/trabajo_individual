@@ -50,7 +50,7 @@ const TarjetaEmpleado = ({
                     alternarTarjetaActiva(empleado.id_empleado);
                   }
                 }}
-                aria-label={`Empleado ${empleado.nombre_empleado} ${empleado.apellido_empleado}`}
+                aria-label={`Empleado ${empleado.apellido_empleado} ${empleado.apellido_empleado}`}
               >
                 <Card.Body
                   className={`p-2 tarjeta-empleado-cuerpo ${

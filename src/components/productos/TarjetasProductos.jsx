@@ -1,82 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const TarjetasProductos = ({ productos = [], abrirModalEdicion, abrirModalEliminacion }) => {
+const TarjetasProductos = ({ productos, abrirModalEdicion, abrirModalEliminacion, categorias }) => {
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    setCargando(!(productos && productos.length > 0));
+  }, [productos]);
+
+  const obtenerNombreCategoria = (idCategoria) => {
+    const categoria = categorias?.find((cat) => cat.id_categoria === idCategoria);
+    return categoria ? categoria.nombre_categoria : 'Sin categoría';
+  };
+
+  const obtenerImagenProducto = (producto) =>
+    producto.imagen || producto.url_imagen || producto.imagen_producto || producto.foto || producto.foto_producto || '';
+
+  if (cargando) {
+    return <p className="text-center">Cargando productos...</p>;
+  }
+
+  if (!productos || productos.length === 0) {
+    return <p className="text-center">No hay productos para mostrar.</p>;
+  }
+
   return (
-    <Row className="g-3">
+    <Row xs={1} md={2} xl={3} className="g-3">
       {productos.map((producto) => (
-        <Col xs={12} key={producto.id_producto}>
+        <Col key={producto.id_producto}>
           <Card className="h-100 shadow-sm">
-            <div className="position-relative">
-              {/* Imagen del producto */}
-              {producto.url_imagen ? (
-                <Card.Img
-                  variant="top"
-                  src={producto.url_imagen}
-                  style={{
-                    height: '180px',
-                    objectFit: 'cover',
-                  }}
-                  alt={producto.nombre_producto}
-                />
-              ) : (
-                <div 
-                  className="bg-light d-flex align-items-center justify-content-center"
-                  style={{ height: '180px' }}
-                >
-                  <i className="bi bi-image text-muted" style={{ fontSize: '3rem' }}></i>
-                </div>
-              )}
-            </div>
-
+            {obtenerImagenProducto(producto) ? (
+              <Card.Img
+                variant="top"
+                src={obtenerImagenProducto(producto)}
+                alt={producto.nombre_producto}
+                style={{ height: '200px', objectFit: 'cover' }}
+              />
+            ) : (
+              <div className="bg-light d-flex align-items-center justify-content-center" style={{ height: '200px' }}>
+                <span className="text-muted">Sin imagen</span>
+              </div>
+            )}
             <Card.Body>
-              <Card.Title className="mb-2">
-                {producto.nombre_producto || 'Sin nombre'}
-              </Card.Title>
-
-              <Card.Text className="text-muted mb-3" style={{ fontSize: '0.95rem' }}>
-                {producto.descripcion_producto || 'Sin descripción'}
+              <Card.Title>{producto.nombre_producto}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">
+                {obtenerNombreCategoria(producto.id_categoria || producto.categoria_producto || producto.nombre_categoria)}
+              </Card.Subtitle>
+              <Card.Text>{producto.descripcion}</Card.Text>
+              <Card.Text>
+                <strong>Precio:</strong> ${producto.precio?.toFixed ? producto.precio.toFixed(2) : producto.precio}
               </Card.Text>
-
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="text-success mb-0 fw-bold">
-                  ${parseFloat(producto.precio_venta || 0).toFixed(2)}
-                </h5>
-                
-                <span className="badge bg-success">Activo</span>
-              </div>
-
-              {/* Acciones */}
-              <div className="d-flex gap-2">
-                <Button
-                  variant="outline-warning"
-                  size="sm"
-                  className="flex-fill"
-                  onClick={() => abrirModalEdicion(producto)}
-                >
-                  <i className="bi bi-pencil me-1"></i> Editar
-                </Button>
-                
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  className="flex-fill"
-                  onClick={() => abrirModalEliminacion(producto)}
-                >
-                  <i className="bi bi-trash me-1"></i> Eliminar
-                </Button>
-              </div>
             </Card.Body>
+            <Card.Footer className="d-flex justify-content-between gap-2">
+              <Button variant="outline-primary" size="sm" onClick={() => abrirModalEdicion(producto)}>
+                Editar
+              </Button>
+              <Button variant="outline-danger" size="sm" onClick={() => abrirModalEliminacion(producto)}>
+                Eliminar
+              </Button>
+            </Card.Footer>
           </Card>
         </Col>
       ))}
-
-      {productos.length === 0 && (
-        <Col xs={12}>
-          <p className="text-center text-muted py-5">No hay productos para mostrar</p>
-        </Col>
-      )}
     </Row>
   );
 };
