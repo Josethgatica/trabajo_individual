@@ -84,7 +84,18 @@ const Encabezado = () => {
           </Nav.Link>
 )}
 
-          
+
+{tienePermiso('ver_ventas') && (
+          <Nav.Link
+            onClick={() => manejarNavegacion("/ventas")}
+            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+          >
+            {mostrarMenu ? <i className="bi-cart-fill me-2"></i> : null}
+            <strong>Ventas</strong>
+          </Nav.Link>
+)}
+
+
     {tienePermiso('ver_productos') && (
           <Nav.Link
             onClick={() => manejarNavegacion("/productos")}
@@ -190,7 +201,7 @@ const Encabezado = () => {
             className="d-inline-block me-2"
           />
           <strong>
-            <h4 className="mb-0">Laura</h4>
+            <h4 className="mb-0">Gatica</h4>
           </strong>
         </Navbar.Brand>
 
@@ -207,7 +218,7 @@ const Encabezado = () => {
           onHide={() => setMostrarMenu(false)}
         >
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Menú Discosa</Offcanvas.Title>
+            <Offcanvas.Title>Menú Gatica</Offcanvas.Title>
           </Offcanvas.Header>
 
           <Offcanvas.Body>{contenidoMenu}</Offcanvas.Body>

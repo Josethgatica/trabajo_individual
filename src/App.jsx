@@ -12,6 +12,7 @@ import Empleados from "./views/Empleados";
 import Clientes from "./views/Clientes";
 import Pagina404 from "./views/Pagina404";
 import Permisos from "./views/Permisos";
+import Ventas from "./views/Ventas";
 
 import "./App.css"
 
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/permisos" element={<RutaProtegida><Permisos /></RutaProtegida>} />
           <Route path="/empleados" element={<RutaProtegida><Empleados /></RutaProtegida>} />
           <Route path="/clientes" element={<RutaProtegida><Clientes /></RutaProtegida>} />
+          <Route path="/ventas" element={<RutaProtegida><Ventas /></RutaProtegida>} />
           
           <Route path="*" element={<Pagina404 />} />
         </Routes>

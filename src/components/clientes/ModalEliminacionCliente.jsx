@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
 
 const ModalEliminacionCliente = ({
   mostrarModalEliminacion,
@@ -25,21 +25,21 @@ const ModalEliminacionCliente = ({
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>Eliminar Cliente</Modal.Title>
+        <Modal.Title>Confirmar Eliminación</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
-        <p>
-          ¿Está seguro que desea eliminar al cliente <strong>{cliente?.nombre} {cliente?.apellido}</strong>?
-        </p>
+        ¿Estás seguro de que deseas eliminar al cliente{" "}
+        <strong>
+          {cliente?.nombre_cliente} {cliente?.apellido_cliente}
+        </strong>
+        ?
       </Modal.Body>
-
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setMostrarModalEliminacion(false)}>
           Cancelar
         </Button>
         <Button variant="danger" onClick={handleEliminar} disabled={deshabilitado}>
-          Eliminar
+          Eliminar Cliente
         </Button>
       </Modal.Footer>
     </Modal>

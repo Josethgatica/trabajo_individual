@@ -390,14 +390,14 @@ const enviarCorreoCategorias = () => {
             />
 
         <ModalEnvioCorreoCategorias
-  mostrarModalCorreo={mostrarModalCorreo}
-  setMostrarModalCorreo={setMostrarModalCorreo}
-  emailDestino={emailDestino}
-  setEmailDestino={setEmailDestino}
-  enviandoCorreo={enviandoCorreo}
-  enviarCorreoCategorias={enviarCorreoCategorias}
-  totalCategorias={categorias.length}
-/>
+              mostrarModalCorreo={mostrarModalCorreo}
+              setMostrarModalCorreo={setMostrarModalCorreo}
+              emailDestino={emailDestino}
+              setEmailDestino={setEmailDestino}
+              enviandoCorreo={enviandoCorreo}
+              enviarCorreoCategorias={enviarCorreoCategorias}
+              totalCategorias={categorias.length}
+            />
 
 
             <NotificacionOperacion
