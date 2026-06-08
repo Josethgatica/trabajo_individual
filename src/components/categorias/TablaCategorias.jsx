@@ -65,6 +65,19 @@ const TablaCategorias = ({
                   >
                     <i className="bi bi-file-earmark-pdf"></i>
                   </Button>
+
+                  <button
+                    variant="outline-secondary"
+                    size="sm"
+                    className="m-1"
+                    onClick={() => copiarCategoria(categoria)}
+                  >
+                    <i className="bi bi-clipboard"></i>
+                  </button>
+
+
+
+
                 </td>
               </tr>
             ))}

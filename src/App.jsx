@@ -16,7 +16,6 @@ import Ventas from "./views/Ventas";
 
 import "./App.css"
 
-
 const App = () => {
   return (
     <Router>

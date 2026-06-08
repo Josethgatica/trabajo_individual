@@ -58,6 +58,17 @@ const TarjetasProductos = ({ productos, abrirModalEdicion, abrirModalEliminacion
               <Button variant="outline-danger" size="sm" onClick={() => abrirModalEliminacion(producto)}>
                 Eliminar
               </Button>
+              <Button
+  variant="outline-primary"
+  size="sm"
+  onClick={() => {
+    generarQRImagen(producto);
+    setIdTarjetaActiva(null);
+  }}
+  title="Generar código QR de la imagen"
+>
+  <i className="bi bi-qr-code"></i>
+</Button>
             </Card.Footer>
           </Card>
         </Col>

@@ -64,6 +64,18 @@ const TablaProductos = ({ productos = [], abrirModalEdicion, abrirModalEliminaci
               >
                 <i className="bi bi-trash"></i>
               </Button>
+
+              <Button
+  variant="outline-primary"
+  size="sm"
+  onClick={() => {
+    generarQRImagen(producto);
+    setIdTarjetaActiva(null);
+  }}
+  title="Generar código QR de la imagen"
+>
+  <i className="bi bi-qr-code"></i>
+</Button>
             </td>
           </tr>
         ))}

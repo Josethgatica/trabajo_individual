@@ -10,6 +10,7 @@ import TarjetasProductos from '../components/productos/TarjetasProductos';
 import TablaProductos from '../components/productos/TablaProductos';  
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 import Paginacion from "../components/ordenamiento/Paginacion";
+import ModalQRProducto from "../components/productos/ModalQRProducto";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -20,6 +21,9 @@ const Productos = () => {
     const [categorias, setCategorias] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
+    const [mostrarModalQR, setMostrarModalQR] = useState(false);
+    const [productoQR, setProductoQR] = useState(null);
+
     
     // --- ESTADOS DE MODALES Y UI ---
     const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
@@ -51,6 +55,20 @@ const Productos = () => {
         categoria_producto: '',
         archivo: null, 
     });
+
+    const generarQRImagen = (producto) => {
+  if (!producto?.url_imagen) {
+    setToast({
+      mostrar: true,
+      mensaje: "Este producto no tiene imagen asociada",
+      tipo: "advertencia"
+    });
+    return;
+  }
+
+  setProductoQR(producto);
+  setMostrarModalQR(true);
+};
 
     // ================== CARGAR DATOS ==================
     const cargarProductos = async () => {
@@ -277,6 +295,12 @@ const Productos = () => {
                 producto={productoAEliminar}
             />
 
+                
+        <ModalQRProducto
+  mostrar={mostrarModalQR}
+  onHide={() => setMostrarModalQR(false)}
+  producto={productoQR}
+/>
             
 
             <NotificacionOperacion
